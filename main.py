@@ -18,7 +18,7 @@ class TestFirstFunc(unittest.TestCase):
     def test_choice(self):  
         element = random.choice(self.seq)  
         self.assertTrue(element in self.seq)  
-        self.assertEqual(2, element, "gao add")
+#         self.assertEqual(2, element, "gao add")
   
     def test_sample(self):  
         with self.assertRaises(ValueError):  
@@ -28,7 +28,8 @@ class TestFirstFunc(unittest.TestCase):
   
 if __name__ == '__main__':  
     unittest.main()
-    print "last line"
+#     suite = unittest.TestLoader().loadTestsFromTestCase(TestFirstFunc)
+#     unittest.TextTestRunner(verbosity=2).run(suite)
     
 """
 hello to github!
