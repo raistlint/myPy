@@ -111,6 +111,35 @@ class Test(unittest.TestCase):
         self.assertEqual(self.l.get(0), 1)
         self.assertEqual(self.l.get(1), 3)
 
+    def test_union(self):
+        self.l.insert(0, 0)
+        self.l.insert(1, 1)
+        self.l.insert(2, 2)
+        self.l.insert(3, 3)
+        tl = sqcList.sqcList()
+        tl.insert(0, 0)
+        tl.insert(1, 2)
+        tl.insert(2, 5)
+        tl.insert(3, 7)
+        self.l.union(tl)
+        self.assertEqual(self.l.length(), 6)
+        self.assertEqual(self.l.get(0), 0)
+        self.assertEqual(self.l.get(1), 1)
+        self.assertEqual(self.l.get(2), 2)
+        self.assertEqual(self.l.get(3), 3)
+        self.assertEqual(self.l.get(4), 5)
+        self.assertEqual(self.l.get(5), 7)
+        
+        del tl
+        tl = sqcList.sqcList()
+        self.l.union(tl)
+        self.assertEqual(self.l.length(), 6)
+        
+        del tl
+        tl = 1
+        self.l.union(tl)
+        self.assertEqual(self.l.length(), 6)
+        
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
