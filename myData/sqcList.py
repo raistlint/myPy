@@ -59,4 +59,13 @@ class sqcList(object):
         self.data.pop()
         return True
     
+    # Algo 2.1
+    def union(self, lb):
+        if (not isinstance(lb, sqcList)) or lb.empty():
+            return
+        for i in range(lb.length()):
+            d = lb.get(i)
+            if self.find(d) == None:
+                self.insert(self.length(), d)
+    
     
