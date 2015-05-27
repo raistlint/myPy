@@ -17,6 +17,12 @@ class Test(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_init(self):
+        self.assertEqual(self.l.length(), 0)
+        t = sqcList.sqcList((1,2,3,4))
+        self.assertEqual(t.length(), 4)
+        for i in range(4):
+            self.assertEqual(t.get(i), i+1)
         
     def test_clear(self):
         self.l.insert(0, 1)
@@ -139,6 +145,22 @@ class Test(unittest.TestCase):
         tl = 1
         self.l.union(tl)
         self.assertEqual(self.l.length(), 6)
+
+    def test_merge(self):
+        self.l.insert(0, 0)
+        self.l.insert(1, 3)
+        self.l.insert(2, 6)
+        self.l.insert(3, 8)
+        tl = sqcList.sqcList()
+        tl.insert(0, 0)
+        tl.insert(1, 2)
+        tl.insert(2, 5)
+        tl.insert(3, 7)
+        self.assertEqual(self.l.merge(tl), [0,0,2,3,5,6,7,8])
+        self.assertEqual(self.l.merge(None), None)
+        tl.clear()
+        self.assertEqual(self.l.merge(tl), [0,3,6,8])
+        
         
 
 if __name__ == "__main__":

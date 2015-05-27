@@ -11,8 +11,11 @@ class sqcList(object):
     sequence list
     '''
 
-    def __init__(self):
-        self.data = []
+    def __init__(self, l=None):
+        if l == None:
+            self.data = []
+        else:
+            self.data = list(l)
         
     def clear(self):
         del self.data
@@ -67,5 +70,26 @@ class sqcList(object):
             d = lb.get(i)
             if self.find(d) == None:
                 self.insert(self.length(), d)
+                
+    # Algo 2.2
+    def merge(self, lb):
+        if not isinstance(lb, sqcList):
+            return
+        re = []
+        i = j = 0
+        while i < self.length() and j < lb.length() :
+            if self.get(i) <= lb.get(j):
+                re.append(self.get(i))
+                i+=1
+            else:
+                re.append(lb.get(j))
+                j+=1
+        while i< self.length():
+            re.append(self.get(i))
+            i+=1
+        while j<lb.length():
+            re.append(lb.get(j))
+            j+=1
+        return re
     
     
