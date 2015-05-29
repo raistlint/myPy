@@ -68,7 +68,7 @@ def getHtml(url):
     return html
 
 def parseHtml(html):
-    reg = r'src="([^ <>]+?\.jpg)"><br>'
+    reg = r'src="([^ <>]+?\.jpg)"><br>' # for xxxurl
 #     reg = r'src="([^ <>]+?\.jpg)" pic_ext'
     imgre = re.compile(reg)
     reg = r'([^ >]+?)</a><br>'
@@ -117,18 +117,60 @@ def getAll(l, d):
 #         print "%03d - %s" % (i, item)
 #     downloadPic(l, wdir, 3)
 
-if __name__ == '__main__':
-    xxurl = "http://www.xqzr777.com/bt.htm"
-    testurl = "http://tieba.baidu.com/p/3762208718"
-    print "**** star time ", time.clock()
-    html = getHtml(xxurl)
-    l = parseHtml(html)
-#     for i, item in enumerate(l):
-#         print "%03d -- %s" %(i, item)
-    getAll(l, r"C:\Users\raistlin\Desktop\program")
-#     getAll(l, r"C:\Users\rgao\Downloads")
+def summary():
     print "**** spend time: ", time.clock()
     for i in nFailed:
         print " ", i
     print "failed time - %d" % len(nFailed)
+
+def getImg(url):
+    html = getHtml(url)
+    l = parseHtml(html)
+    getAll(l, r"C:\Users\raistlin\Desktop\program")
+    summary()
+
+def parseTopic(html):
+    reg = r'src="(.+?\.jpg)" pic_ext='
+    imgre = re.compile(reg)
+    img = re.findall(imgre, html)
+    return img
+    
+def identifyImg(name):
+    if os.path.getsize(name)/1024.0 <10:
+        tempDir = os.path.dirname(name) + "\\remove"
+        if not os.path.isdir(tempDir):
+            os.mkdir(tempDir)
+        os.rename(name, "%s\\%s" % (tempDir, os.path.basename(name)))
+
+def getTopic(url, num, path):
+    print num, url
+    html = getHtml(url)
+    for i, item in enumerate(parseTopic(html)):
+        name = "%s\\%03d-%02d.jpg" % (path, num, i)
+        proDownImg(item, name)
+        identifyImg(name)
+
+def traverseForum(url, savePath):
+    urlBase = url[:url[7:].index('/')+7]
+    html = getHtml(url)
+    reg = r'href="(/p/\w+?)" title='
+    pageRe = re.compile(reg)
+    pages = re.findall(pageRe, html)
+#     getTopic("%s/%s" % (urlBase, pages[4]), 0, savePath)
+#     getTopic(r'http://tieba.baidu.com//p/3762208718', 0, savePath)
+    for i, item in enumerate(pages):
+        getTopic("%s/%s" % (urlBase, item), i, savePath)
+    summary()
+    
+if __name__ == '__main__':
+    xxurl = "http://www.xqzr777.com/bt.htm"
+    testurl = "http://tieba.baidu.com/p/3762208718"
+    url_yurisa = "http://tieba.baidu.com/f?kw=yurisa&tp=0"
+    print "**** star time ", time.clock()
+    # start from here
+    
+#     getImg(xxurl)
+
+    traverseForum(url_yurisa, r'C:\Users\rgao\Desktop\new\temp')
+    
     print "last line"
